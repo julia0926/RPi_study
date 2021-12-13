@@ -14,11 +14,15 @@ def helloworld():
 #쿼리 스트링이니까 뒤에 매개변수 필요 업슴
 @app.route("/led")
 def led():
-	state = request.args.get("state")
+	state = request.args.get("state", "error")
 	if state == "on":
 		GPIO.output(LED, GPIO.HIGH)
-	else:
+	elif state == "off":
 		GPIO.output(LED, GPIO.LOW)
+    elif state == "error":
+        return "Missing Query String State"
+    else:
+        return "Wrong Query String State "
 	return "LED" + state
 
 @app.route("/gpio/cleanup")
